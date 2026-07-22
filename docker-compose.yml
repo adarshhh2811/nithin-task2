@@ -1,0 +1,13 @@
+services:
+  task-tracker-app:
+    image: task-tracker-app:latest
+    container_name: task-tracker-container1
+ 
+    build:
+      context: .
+      dockerfile: Dockerfile
+ 
+    ports:
+      - "3001:3000"
+ 
+    restart: unless-stopped
