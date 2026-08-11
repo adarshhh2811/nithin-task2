@@ -14,7 +14,7 @@ pipeline {
         stage('SCM Pull') {
             steps {
                 git branch: 'main',
-                    url: ''
+                    url: 'https://github.com/adarshhh2811/nithin-task2.git'
             }
         }
 
