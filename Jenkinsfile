@@ -44,8 +44,8 @@ pipeline {
     steps { 
         // Use -f to specify your compose file path if it's in a subdirectory
         sh ''' 
-            docker compose down --remove-orphans || true
-            docker compose up -d --force-recreate --build
+            docker-compose down --remove-orphans || true
+            docker-compose up -d --force-recreate --build
         ''' 
     } 
 } 
