@@ -1,48 +1,25 @@
-#==========================
-# Stage 1: Build Stage
-# ==========================
- 
-FROM node:20-alpine AS builder
- 
+FROM maven:3.9.8-eclipse-temurin-17 AS builder
+
 WORKDIR /app
- 
-COPY package*.json .
- 
-RUN npm install
- 
-COPY . .
- 
- 
- 
-# ==========================
-# Stage 2: Production Stage
-# ==========================
- 
-FROM node:20-alpine
- 
+
+COPY pom.xml .
+
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre
+
+RUN useradd -m spring
+
 WORKDIR /app
- 
- 
-# Copy only required application files
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/app.js ./
- 
- 
-# Create non-root user
-RUN addgroup -S appgroup && \
-    adduser -S appuser -G appgroup
- 
- 
-# Change ownership
-RUN chown -R appuser:appgroup /app
- 
- 
-# Run container as non-root
-USER appuser
- 
- 
-EXPOSE 3000
- 
- 
-CMD ["npm", "start"]
+
+COPY --from=builder /app/target/*.jar app.jar
+
+RUN chown -R spring:spring /app
+
+USER spring
+
+EXPOSE 8082
+
+ENTRYPOINT ["java","-jar","app.jar"]
