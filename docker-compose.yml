@@ -3,7 +3,7 @@ services:
     build:
       context: .
 
-    image: adarsh28111/nithin task-2:latest
+    image: adarsh28111/nithin:latest
 
     ports:
       - "8082:8082"
