@@ -40,15 +40,14 @@ pipeline {
 }
 
 
-  stage('docker compose') { 
-    steps { 
-        // Use -f to specify your compose file path if it's in a subdirectory
-        sh ''' 
-            docker-compose down --remove-orphans || true
-            docker-compose up -d --force-recreate --build
-        ''' 
-    } 
-} 
+ stage('docker compose') {
+    steps {
+        sh '''
+            docker compose down --remove-orphans || true
+            docker compose up -d --force-recreate
+        '''
+    }
+}
 
 stage('Docker Cleanup') { 
     steps { 
